@@ -4,438 +4,206 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mon Planning</title>
+
 <style>
-*{box-sizing:border-box}
-body{
-margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-background:linear-gradient(160deg,#eef2ff,#f8fafc);
-color:#0f172a;min-height:100vh
+* {
+  box-sizing: border-box;
 }
-.page{
-min-height:100vh;padding:20px 15px;
-display:flex;align-items:center;justify-content:center
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f4f6f8;
+  color: #17202a;
 }
-.box{
-width:100%;max-width:500px;background:white;padding:26px;
-border-radius:26px;box-shadow:0 18px 50px rgba(15,23,42,.12)
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
-.logo{font-size:30px;margin-bottom:20px}
-.small{
-font-size:11px;font-weight:800;letter-spacing:.12em;
-color:#64748b;text-transform:uppercase
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  border-radius: 24px;
+  padding: 30px 22px;
+  text-align: center;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.08);
 }
-h1{font-size:30px;margin:5px 0}
-.sub{color:#64748b;font-size:14px;line-height:1.5}
-label{display:block;font-weight:700;font-size:13px;margin-top:22px}
-input{
-width:100%;height:50px;margin-top:8px;padding:12px;
-border:1px solid #cbd5e1;border-radius:14px;font-size:16px
+
+h1 {
+  margin-top: 0;
+  font-size: 30px;
 }
-button{
-border:0;border-radius:14px;background:#0f172a;color:white;
-font-weight:800;padding:14px;cursor:pointer
+
+p {
+  color: #667085;
+  font-size: 16px;
 }
-.go{width:100%;margin-top:13px}
-#planning{display:none;align-items:flex-start}
-.wrap{width:100%;max-width:760px}
-.back{background:white;color:#0f172a;border:1px solid #e2e8f0}
-.ref{color:#64748b;font-size:13px;margin:5px 0 15px}
-.card{
-background:white;border:1px solid #e2e8f0;border-radius:22px;
-padding:15px;box-shadow:0 12px 35px rgba(15,23,42,.07)
+
+input {
+  width: 100%;
+  padding: 16px;
+  margin: 18px 0;
+  border: 1px solid #d0d5dd;
+  border-radius: 14px;
+  font-size: 18px;
 }
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}
-.month{font-size:20px;font-weight:900}
-.nav{display:flex;gap:7px}
-.nav button{width:40px;height:40px;padding:0;font-size:22px}
-.week,.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
-.week div{text-align:center;font-size:9px;font-weight:800;color:#94a3b8;padding:5px}
-.day{
-min-height:68px;border:1px solid #e2e8f0;border-radius:12px;padding:6px
+
+button {
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  padding: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  background: #111827;
+  color: white;
 }
-.empty{visibility:hidden}
-.num{font-size:12px;font-weight:900}
-.status{font-size:8px;font-weight:800;line-height:1.15;margin-top:8px}
-.rest{background:#dcfce7;color:#15803d}
-.jour{background:#dbeafe;color:#1d4ed8}
-.nuit{background:#ede9fe;color:#6d28d9}
-.selected{outline:3px solid #0f172a;outline-offset:-3px}
-.legend{
-display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;
-font-size:11px;font-weight:700;color:#475569
+
+.result {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 35px 0;
+  line-height: 1.4;
+}
+
+.date {
+  font-size: 17px;
+  color: #667085;
+  margin-bottom: 20px;
+}
+
+.secondary {
+  background: #eef1f4;
+  color: #17202a;
+}
+
+.hidden {
+  display: none;
 }
 </style>
 </head>
 
 <body>
 
-<div class="page" id="accueil">
-<div class="box">
+<!-- PAGE 1 -->
+<div id="page1" class="page">
+  <div class="card">
+    <h1>📅 Mon Planning</h1>
 
-<div class="logo">📅</div>
+    <p>Choisis une date de référence.</p>
 
-<div class="small">MON PLANNING</div>
+    <input type="date" id="dateDepart">
 
-<h1>Choisir une date</h1>
-
-<p class="sub">
-Choisis la date de ton <b>1er jour de repos</b>.
-Ton cycle sera calculé automatiquement.
-</p>
-
-<label>Date de départ</label>
-
-<input id="dateDepart" type="date">
-
-<button class="go" onclick="ouvrirPlanning()">
-Voir mon planning →
-</button>
-
-</div>
+    <button onclick="voirPlanning()">
+      Voir mon planning →
+    </button>
+  </div>
 </div>
 
 
-<div class="page" id="planning">
+<!-- PAGE 2 -->
+<div id="page2" class="page hidden">
+  <div class="card">
 
-<div class="wrap">
+    <h1>Mon Planning</h1>
 
-<button class="back" onclick="retour()">
-← Changer la date
-</button>
+    <div id="dateAffichee" class="date"></div>
 
-<div style="margin-top:15px">
+    <div id="resultat" class="result"></div>
 
-<div class="small">PLANNING CALCULÉ</div>
+    <button class="secondary" onclick="retour()">
+      ← Changer la date
+    </button>
 
-<h1>Mon calendrier</h1>
-
-<div class="ref" id="reference"></div>
-
-</div>
-
-<div class="card">
-
-<div class="bar">
-
-<div class="month" id="mois"></div>
-
-<div class="nav">
-<button onclick="moisPrecedent()">‹</button>
-<button onclick="moisSuivant()">›</button>
-</div>
-
-</div>
-
-<div class="week">
-<div>LUN</div>
-<div>MAR</div>
-<div>MER</div>
-<div>JEU</div>
-<div>VEN</div>
-<div>SAM</div>
-<div>DIM</div>
-</div>
-
-<div class="grid" id="calendrier"></div>
-
-<div class="legend">
-<span>🟢 Repos</span>
-<span>🔵 Service jour</span>
-<span>🟣 Service nuit</span>
-</div>
-
-</div>
-
-</div>
+  </div>
 </div>
 
 
 <script>
 
-let dateDepart;
-let moisActuel;
-
-
-/* Date du jour */
-const maintenant = new Date();
-
-const yyyy = maintenant.getFullYear();
-const mm = String(maintenant.getMonth()+1).padStart(2,"0");
-const dd = String(maintenant.getDate()).padStart(2,"0");
+const dateParDefaut = "2026-09-17";
 
 const champ = document.getElementById("dateDepart");
 
+const dateSauvegardee = localStorage.getItem("datePlanning");
 
-/* Charger la date mémorisée */
-const sauvegarde = localStorage.getItem("datePlanning");
+champ.value = dateSauvegardee || dateParDefaut;
 
-if(sauvegarde){
 
-champ.value = sauvegarde;
+function calculerPlanning(dateChoisie) {
 
-}else{
+  const depart = new Date(dateParDefaut + "T00:00:00");
+  const date = new Date(dateChoisie + "T00:00:00");
 
-champ.value = "2026-09-17";
+  const difference = Math.floor(
+    (date - depart) / (1000 * 60 * 60 * 24)
+  );
 
+  const cycle = ((difference % 9) + 9) % 9;
+
+  if (cycle < 3) {
+    return "☀️ Service jour " + (cycle + 1) + "/3";
+  }
+
+  if (cycle < 6) {
+    return "🌙 Service nuit " + (cycle - 2) + "/3";
+  }
+
+  return "🛌 Repos " + (cycle - 5) + "/3";
 }
 
 
-/* Ouvrir le planning */
+function voirPlanning() {
 
-function ouvrirPlanning(){
+  const dateChoisie = champ.value;
 
-if(!champ.value)return;
+  if (!dateChoisie) {
+    return;
+  }
 
-localStorage.setItem("datePlanning",champ.value);
+  localStorage.setItem("datePlanning", dateChoisie);
 
-const morceaux = champ.value.split("-");
-
-dateDepart = new Date(
-Number(morceaux[0]),
-Number(morceaux[1])-1,
-Number(morceaux[2])
-);
-
-moisActuel = new Date(
-dateDepart.getFullYear(),
-dateDepart.getMonth(),
-1
-);
-
-document.getElementById("accueil").style.display="none";
-document.getElementById("planning").style.display="flex";
-
-afficherCalendrier();
-
-window.scrollTo(0,0);
-
+  afficherPlanning(dateChoisie);
 }
 
 
-/* Retour */
+function afficherPlanning(dateChoisie) {
 
-function retour(){
+  const resultat = calculerPlanning(dateChoisie);
 
-document.getElementById("planning").style.display="none";
-document.getElementById("accueil").style.display="flex";
+  const date = new Date(dateChoisie + "T00:00:00");
 
+  const dateFormatee = date.toLocaleDateString(
+    "fr-FR",
+    {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    }
+  );
+
+  document.getElementById("dateAffichee").textContent =
+    dateFormatee;
+
+  document.getElementById("resultat").textContent =
+    resultat;
+
+  document.getElementById("page1").classList.add("hidden");
+  document.getElementById("page2").classList.remove("hidden");
 }
 
 
-/* Différence entre deux dates */
+function retour() {
 
-function difference(a,b){
-
-const aa = new Date(
-a.getFullYear(),
-a.getMonth(),
-a.getDate()
-);
-
-const bb = new Date(
-b.getFullYear(),
-b.getMonth(),
-b.getDate()
-);
-
-return Math.round((aa-bb)/86400000);
-
-}
-
-
-/* Calcul du cycle */
-
-function obtenirStatut(date){
-
-let n =
-(difference(date,dateDepart)%9+9)%9;
-
-if(n<3){
-
-return {
-nom:"Repos",
-numero:n+1,
-classe:"rest"
-};
-
-}
-
-if(n<6){
-
-return {
-nom:"Service jour",
-numero:n-2,
-classe:"jour"
-};
-
-}
-
-return {
-nom:"Service nuit",
-numero:n-5,
-classe:"nuit"
-};
-
-}
-
-
-/* Afficher calendrier */
-
-function afficherCalendrier(){
-
-let titre =
-moisActuel.toLocaleDateString(
-"fr-FR",
-{
-month:"long",
-year:"numeric"
-}
-);
-
-document.getElementById("mois").textContent =
-titre.charAt(0).toUpperCase()+titre.slice(1);
-
-
-document.getElementById("reference").textContent =
-"1er jour de repos : "+
-dateDepart.toLocaleDateString(
-"fr-FR",
-{
-day:"numeric",
-month:"long",
-year:"numeric"
-}
-);
-
-
-const calendrier =
-document.getElementById("calendrier");
-
-calendrier.innerHTML="";
-
-
-const premier =
-new Date(
-moisActuel.getFullYear(),
-moisActuel.getMonth(),
-1
-);
-
-const dernier =
-new Date(
-moisActuel.getFullYear(),
-moisActuel.getMonth()+1,
-0
-);
-
-
-const decalage =
-(premier.getDay()+6)%7;
-
-
-/* Cases avant le 1er jour */
-
-for(let i=0;i<decalage;i++){
-
-const vide=document.createElement("div");
-
-vide.className="day empty";
-
-calendrier.appendChild(vide);
-
-}
-
-
-/* Jours */
-
-for(let jour=1;jour<=dernier.getDate();jour++){
-
-const date =
-new Date(
-moisActuel.getFullYear(),
-moisActuel.getMonth(),
-jour
-);
-
-const statut =
-obtenirStatut(date);
-
-
-const cellule =
-document.createElement("div");
-
-cellule.className =
-"day "+statut.classe;
-
-
-if(difference(date,dateDepart)===0){
-
-cellule.classList.add("selected");
-
-}
-
-
-cellule.innerHTML =
-"<div class='num'>"+jour+"</div>"+
-"<div class='status'>"+
-statut.nom+
-"<br>"+
-statut.numero+
-"/3"+
-"</div>";
-
-
-calendrier.appendChild(cellule);
-
-}
-
-}
-
-
-/* Mois précédent */
-
-function moisPrecedent(){
-
-moisActuel =
-new Date(
-moisActuel.getFullYear(),
-moisActuel.getMonth()-1,
-1
-);
-
-afficherCalendrier();
-
-}
-
-
-/* Mois suivant */
-
-function moisSuivant(){
-
-moisActuel =
-new Date(
-moisActuel.getFullYear(),
-moisActuel.getMonth()+1,
-1
-);
-
-afficherCalendrier();
-
-}
-
-
-/* Si une date existe déjà,
-on peut la réutiliser automatiquement */
-
-if(sauvegarde){
-
-const morceaux=sauvegarde.split("-");
-
-dateDepart=new Date(
-Number(morceaux[0]),
-Number(morceaux[1])-1,
-Number(morceaux[2])
-);
+  document.getElementById("page2").classList.add("hidden");
+  document.getElementById("page1").classList.remove("hidden");
 
 }
 
